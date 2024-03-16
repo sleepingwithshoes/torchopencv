@@ -83,8 +83,8 @@ You should see the output of the NVIDIA System Management Interface, like this:
 ### Clone the repository
 Go to the directory where you want to clone the repository and run the following command:
 ```bash
-git clone
-cd 
+git clone https://github.com/sleepingwithshoes/torchopencv.git
+cd torchopencv
 ```
 ## Build docker image
 To build the docker image, run the following command (**Please note** that build process will take some time, depending on the performance of your host system.)
