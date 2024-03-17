@@ -1,5 +1,7 @@
 # Docker toolchain for building and running OpenCV and Pytorch C++ projects with CUDA support in CLion
 
+<br>![](doc/images/torch-opencv-docker.png)
+
 ## Features
 The main feature to use docker container for development is to encapsulate all dependencies in a container. This allows to build and run the code on any host system without the need to install dependencies (or only a minimal installation is required)
 - [x] Build all dependencies encapsulated in a Docker container (minimal host dependencies)
