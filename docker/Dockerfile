@@ -5,6 +5,7 @@ ARG CLANG_VARION=17
 ARG CMAKE_VERSION=3.28.3
 ARG NINJA_VERSION=1.11.1
 ARG LIBTORCH_VERSION=2.2.1
+ARG CUDA_ARCH=8.9
 
 RUN apt-get update && apt-get install -y \
     gdb \
@@ -50,15 +51,53 @@ RUN unzip libtorch-cxx11-abi-shared-with-deps-${LIBTORCH_VERSION}+cu121.zip -d /
 RUN rm libtorch-cxx11-abi-shared-with-deps-${LIBTORCH_VERSION}+cu121.zip
 
 # Install OpenCV
-RUN apt-get update && apt-get install -y build-essential libgtk2.0-dev python3-dev
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libgtk-3-dev \
+    python3-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libtiff-dev \
+    libavcodec-dev \ 
+    libavformat-dev \ 
+    libswscale-dev \
+    libswresample-dev \
+    libgstreamer1.0-dev \ 
+    libgstreamer-plugins-base1.0-dev \
+    libxvidcore-dev \
+    x264 \
+    libx264-dev \
+    libfaac-dev \
+    libmp3lame-dev \
+    libtheora-dev \
+    libfaac-dev \
+    libmp3lame-dev \
+    libvorbis-dev
 RUN mkdir -p opencv-build/build
 RUN cd opencv-build && git clone https://github.com/opencv/opencv.git && git clone https://github.com/opencv/opencv_contrib.git
-RUN cd opencv-build/build && \
-    cmake -D WITH_GTK=ON \
+RUN cd opencv-build/build && cmake \
+    -D WITH_TBB=ON \
+    -D ENABLE_FAST_MATH=1 \
+    -D CUDA_FAST_MATH=1 \
+    -D WITH_CUBLAS=1 \
+    -D BUILD_opencv_cudacodec=OFF \
+    -D WITH_CUDA=ON \
+    -D WITH_CUDNN=ON \
+    -D CUDA_ARCH_BIN=${CUDA_ARCH}} \
+    -D CUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda  \
+    -D CUDNN_LIBRARY=/usr/lib/x86_64-linux-gnu/libcudnn.so \
+    -D WITH_GTK=ON \
+    -D WITH_V4L=ON \
+    -D WITH_QT=OFF \
+    -D WITH_OPENGL=ON \
+    -D WITH_GSTREAMER=ON \
+    -D INSTALL_PYTHON_EXAMPLES=OFF \
+    -D INSTALL_C_EXAMPLES=OFF \
+    -D BUILD_EXAMPLES=OFF \
     -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules \
     ../opencv
 RUN cd opencv-build/build && make -j$(nproc) && make install
-RUN rm -rf opencv-build
+RUN rm -rf opencv-build 
 
 # Add user
 ARG UID=1000
