@@ -4,7 +4,7 @@ project(TorchOpenCV)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-include(opencv.cmake)
 include(torch.cmake)
+include(opencv.cmake)
 
 add_subdirectory(src)
