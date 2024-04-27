@@ -16,7 +16,7 @@ The main feature to use docker container for development is to encapsulate all d
 - GCC 12
 - LLVM/CLang 17
 - Ninja 1.11.1
-- Pytorch (libtorch) 2.2.1
+- Pytorch (libtorch) 2.3.x
 - OpenCV 4.x
 
 ## Host system setup
